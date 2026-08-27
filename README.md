@@ -294,18 +294,6 @@ predictions/
 └── ...
 ```
 
-### 7.4 Post-process predictions
-
-The raw predictions may contain small isolated false-positive regions. Keep only the largest connected component:
-
-```Bash
-python postprocessing/keep_largest_component.py \
-    --input_dir predictions/ \
-    --output_dir predictions_clean/
-```
-
-The final masks are written to predictions_clean/.
-
 ## 8. Post-processing predictions
 
 The trained model occasionally predicts a small, spatially disconnected false-positive blob elsewhere in the image (e.g. a nearby vessel with similar echogenicity to the spleen), in addition to correctly segmenting the spleen itself. This is removed by keeping only the largest connected component in each predicted mask:
