@@ -233,10 +233,12 @@ saves the images with the required _0000.nii.gz suffix.
 
 For example:
 
+```
 inference_input/
 ├── souris4660_img01_0000.nii.gz
 ├── souris4660_img02_0000.nii.gz
 └── ...
+```
 
 (Use the same in-plane pixel spacing as at training time — found in `nnUNet_preprocessed/Dataset001_Spleen/nnUNetPlans.json`. A mismatch here does not raise an error but will silently resample images incorrectly.)
 
@@ -253,22 +255,20 @@ $env:nnUNet_results = "C:\path\to\nnUNet_results"
 For inference, nnUNet_raw and nnUNet_preprocessed are not required if the trained model is already available in nnUNet_results.
 
 The expected model structure is:
+```
 nnUNet_results/
 └── Dataset001_Rate/
     └── nnUNetTrainer__nnUNetPlans__2d/
         └── fold_0/
             └── checkpoint_final.pth
+```
 
-Important: avoid paths containing accented characters or other special characters when possible, especially on Windows. For example, prefer:
-
-C:\Users\username\Desktop\spleen_segmentation\
-
-over:
-
-C:\Users\username\Desktop\test seg réussi\
+Important: avoid paths containing accented characters or other special characters when possible, especially on Windows. 
 
 ### 7.3 Predict
+
 Run: 
+
 ```PowerShell
 nnUNetv2_predict \
     -i inference_input/ \
@@ -287,10 +287,12 @@ where:
 
 The predicted masks are saved as:
 
+```
 predictions/
 ├── souris4660_img01.nii.gz
 ├── souris4660_img02.nii.gz
 └── ...
+```
 
 ### 7.4 Post-process predictions
 
