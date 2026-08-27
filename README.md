@@ -279,11 +279,11 @@ nnUNetv2_predict \
 ```
 where:
 
--i = input NIfTI images;
--o = output directory for predicted masks;
--d 1 = dataset ID;
--c 2d = 2D configuration;
--f 0 = fold 0.
+- ```-i``` = input NIfTI images;
+- ```-o``` = output directory for predicted masks;
+- ```-d 1``` = dataset ID;
+- ```-c 2d``` = 2D configuration;
+- ```-f 0``` = fold 0.
 
 The predicted masks are saved as:
 
