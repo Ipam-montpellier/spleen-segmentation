@@ -308,4 +308,4 @@ MIT — see [LICENSE](LICENSE).
 
 ## Acknowledgements
 
-PhyMedExp animal housing staff and the Imagerie du Petit Animal de Montpellier (IPAM, Biocampus).
+PhyMedExp animal housing staff and the Imagerie Préclinique Appliquée de Montpellier (IPAM, Biocampus).
