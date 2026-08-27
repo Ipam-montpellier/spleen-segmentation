@@ -224,14 +224,85 @@ python data_preparation/tif_to_nifti.py \
     --output_dir inference_input/ \
     --pixel_spacing_xy 0.2645833194255829
 ```
+The conversion script:
+
+converts RGB images to grayscale;
+adds a singleton z-dimension;
+sets the in-plane pixel spacing used during training;
+saves the images with the required _0000.nii.gz suffix.
+
+For example:
+
+inference_input/
+├── souris4660_img01_0000.nii.gz
+├── souris4660_img02_0000.nii.gz
+└── ...
 
 (Use the same in-plane pixel spacing as at training time — found in `nnUNet_preprocessed/Dataset001_Spleen/nnUNetPlans.json`. A mismatch here does not raise an error but will silently resample images incorrectly.)
 
-### 7.2 Predict
+### 7.2 Configure nnU-Net
 
-```bash
-nnUNetv2_predict -i inference_input/ -o predictions/ -d 1 -c 2d -f 0
+Before prediction, nnU-Net must know where the trained model is stored.
+
+Set the nnUNet_results environment variable to the directory containing the trained model:
+
+Windows PowerShell:
+```PowerShell
+$env:nnUNet_results = "C:\path\to\nnUNet_results"
 ```
+For inference, nnUNet_raw and nnUNet_preprocessed are not required if the trained model is already available in nnUNet_results.
+
+The expected model structure is:
+nnUNet_results/
+└── Dataset001_Rate/
+    └── nnUNetTrainer__nnUNetPlans__2d/
+        └── fold_0/
+            └── checkpoint_final.pth
+
+Important: avoid paths containing accented characters or other special characters when possible, especially on Windows. For example, prefer:
+
+C:\Users\username\Desktop\spleen_segmentation\
+
+over:
+
+C:\Users\username\Desktop\test seg réussi\
+
+### 7.3 Predict
+Run: 
+```PowerShell
+nnUNetv2_predict \
+    -i inference_input/ \
+    -o predictions/ \
+    -d 1 \
+    -c 2d \
+    -f 0
+```
+where:
+
+-i = input NIfTI images;
+-o = output directory for predicted masks;
+-d 1 = dataset ID;
+-c 2d = 2D configuration;
+-f 0 = fold 0.
+
+The predicted masks are saved as:
+
+predictions/
+├── souris4660_img01.nii.gz
+├── souris4660_img02.nii.gz
+└── ...
+
+### 7.4 Post-process predictions
+
+The raw predictions may contain small isolated false-positive regions. Keep only the largest connected component:
+
+```Bash
+python postprocessing/keep_largest_component.py \
+    --input_dir predictions/ \
+    --output_dir predictions_clean/
+```
+
+The final masks are written to predictions_clean/.
 
 ## 8. Post-processing predictions
 
