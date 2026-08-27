@@ -1,0 +1,6 @@
+nnunetv2
+SimpleITK
+numpy
+scipy
+# torch / torchvision / torchaudio: install separately with the CUDA build
+# matching your GPU, following https://pytorch.org/get-started/locally/

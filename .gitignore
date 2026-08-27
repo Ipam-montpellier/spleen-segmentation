@@ -1,0 +1,16 @@
+# Environments
+venv/
+nnunet_env/
+__pycache__/
+*.pyc
+
+# nnU-Net data and results (too large / instance-specific for Git)
+nnUNet_raw/
+nnUNet_preprocessed/
+nnUNet_results/
+*.nii.gz
+*.pth
+
+# OS files
+.DS_Store
+Thumbs.db
