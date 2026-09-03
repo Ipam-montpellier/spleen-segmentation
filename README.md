@@ -219,7 +219,7 @@ nnUNetv2_train 1 2d 0 --c
 Input images must be in the same format used for training (`.nii.gz`, `_0000` suffix). If starting from `.tif`/`.tiff` images instead, convert them first:
 
 ```bash
-python data_preparation/tif_to_nifti.py \
+python data_preparation/conversion.py \
     --input_dir new_tif_images/ \
     --output_dir inference_input/ \
     --pixel_spacing_xy 0.2645833194255829
@@ -337,7 +337,7 @@ To reuse an already-trained model elsewhere:
 | Suspiciously high validation Dice (e.g. > 0.9) within the first few epochs | Train/validation split leaking near-duplicate images between the two sets | Regenerate `splits_final.json` with `generate_per_mouse_split.py` (§5) |
 | `nnUNetv2_train ... -c` → `error: unrecognized arguments: -c` | Wrong flag | Use `--c` (double dash), not `-c` |
 | Training silently restarts from epoch 0 with learning rate back at 0.01 after a resume attempt | Resume flag missing or wrong, or the prior checkpoint was already overwritten | Always resume with `nnUNetv2_train <d> <config> <fold> --c`; verify the resumed epoch/learning rate in the printed log before assuming the resume worked |
-| `IndexError: list index out of range` during `nnUNetv2_predict` preprocessing on images converted from `.tif` | A plain 2D `.tif` → NIfTI conversion only carries a 2-element spacing tuple; nnU-Net's 2D pipeline expects 3 | Use `tif_to_nifti.py` (§7.1), which adds a singleton z-dimension and a 3-element spacing |
+| `IndexError: list index out of range` during `nnUNetv2_predict` preprocessing on images converted from `.tif` | A plain 2D `.tif` → NIfTI conversion only carries a 2-element spacing tuple; nnU-Net's 2D pipeline expects 3 | Use `conversion.py` (§7.1), which adds a singleton z-dimension and a 3-element spacing |
 | Predicted masks contain a small isolated blob elsewhere in the image | Model false positive on a structure with similar echogenicity to the spleen | Apply `keep_largest_component.py` (§8) |
 | Python version conflicts (e.g. system default is too new for nnU-Net) | Multiple Python versions needed on the same machine | Install Python 3.10/3.11 alongside the existing version rather than replacing it; use `py -3.11 -m venv nnunet_env` (Windows) to target the correct one explicitly |
 
